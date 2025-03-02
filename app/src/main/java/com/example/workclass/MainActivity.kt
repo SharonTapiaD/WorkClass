@@ -43,11 +43,12 @@ import com.example.workclass.ui.Screens.HomeScreen
 import com.example.workclass.ui.theme.WorkClassTheme
 import com.example.workclass.ui.Screens.MainMenuScreen
 import com.example.workclass.ui.Screens.TestScreen
+import com.example.workclass.ui.Screens.WattpadInterface
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContent {
             WorkClassTheme {
                 ComposableMultiScreenApp()
@@ -61,11 +62,13 @@ fun ComposableMultiScreenApp(){
     val navController = rememberNavController()
     SetupNavGraph(navController = navController)
 }
+
 @Composable
 fun SetupNavGraph(navController: NavHostController){
-    NavHost(navController=navController, startDestination= "main_screen"){
+    NavHost(navController=navController, startDestination= "main_menu"){
         composable("main_menu"){MainMenuScreen(navController) }
         composable("home_screen"){HomeScreen(navController) }
         composable("test_screen"){ TestScreen(navController) }
+        composable("wattpad_interface"){ WattpadInterface(navController) }
     }
 }
