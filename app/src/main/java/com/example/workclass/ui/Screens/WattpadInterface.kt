@@ -22,8 +22,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
@@ -35,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.example.workclass.R
 import androidx.compose.material3.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,7 +53,10 @@ fun WattpadInterface(navController: NavHostController){
     ){
         BarraSuperior()
         PQTGTodo()
+        textoDulceOferta()
         dulceOferta()
+        mejoresSelecciones()
+        BarraInferior()
     }
 }
 
@@ -139,7 +147,7 @@ data class Libro(
 
 val listaLibros = listOf(
     Libro("Si me dices que no", R.drawable.simedicesqueno, "madrid"),
-    Libro("Mi vecino es striper", R.drawable.mivecinostripper, "itsbeautifulove"),
+    Libro("Mi vecino es stripper", R.drawable.mivecinostripper, "itsbeautifulove"),
     Libro("A través de mi ventana", R.drawable.atravesventana1, "suspenso")
 )
 
@@ -169,6 +177,32 @@ fun LibroItem(libro: Libro){
 
 @Preview(showBackground = true)
 @Composable
+fun textoDulceOferta(){
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start
+    ){
+        Text(
+            text = "Dulce oferta San Valentín! \uD83D\uDC96",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = "¡30% de descuento en Premium mensual, ahora! \uD83D\uDC8C \uD83D\uDCD6",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
 fun dulceOferta(){
     Box(
         modifier = Modifier
@@ -184,25 +218,102 @@ fun dulceOferta(){
             modifier = Modifier
                 .fillMaxSize()
         )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.3f))
-                .padding(12.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ){
-            Text(
-                text = "Dulce oferta de San Valentín!",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
-            Text(
-                text = "!30% de descuento Premium mensual, ahora!",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun mejoresSelecciones() {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Las mejores secciones para ti",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        LazyRow {
+            items(libros) { libro2 -> LibroItem2(libro2) }
         }
+    }
+}
+
+data class Libros(
+    val titulo: String,
+    val imagenRes: Int
+)
+
+val libros = listOf(
+    Libros("La no tan ordinaria vida de Tabitha", R.drawable.vidatabitha),
+    Libros("Mi vecino es stripper", R.drawable.mivecinostripper),
+    Libros("La maldición del cliché", R.drawable.maldicioncliche)
+)
+
+@Composable
+fun LibroItem2(libro2: Libros) {
+    Column(
+        modifier = Modifier
+            .padding(end = 8.dp)
+            .clickable { /*Acción al dar clic en el libro*/ }
+    ) {
+        Image(
+            painter = painterResource(id = libro2.imagenRes),
+            contentDescription = libro2.titulo,
+            modifier = Modifier
+                .size(120.dp, 180.dp)
+                .clip(RoundedCornerShape(8.dp)),
+           // contentScale = ContentScale.Crop
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BarraInferior(){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .background(Color.White)
+            .border(2.dp, Color.White),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Icon(
+            imageVector = Icons.Default.Home,
+            contentDescription = "Home",
+            tint = Color(0xFFFFA07A),
+            modifier = Modifier
+                .size(24.dp)
+        )
+        Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = "Search",
+            tint = Color.Gray,
+            modifier = Modifier
+                .size(24.dp)
+        )
+        Image(
+            painter = painterResource(R.drawable.libreria),
+            contentDescription = "Librería",
+            modifier = Modifier
+                .size(24.dp)
+        )
+        Icon(
+            imageVector = Icons.Default.Create,
+            contentDescription = "Escribir",
+            tint = Color.Gray,
+            modifier = Modifier
+                .size(24.dp)
+        )
+        Icon(
+            imageVector = Icons.Default.Notifications,
+            contentDescription = "Notificaciones",
+            tint = Color.Gray,
+            modifier = Modifier
+                .size(24.dp)
+        )
     }
 }
