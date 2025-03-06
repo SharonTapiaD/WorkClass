@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -42,7 +43,151 @@ fun ComponentsScreen(navController: NavHostController){
         //Switches()
         //Badges()
         //SnackBars()
-        AlertDialogs()
+        //AlertDialogs()
+        var option by remember { mutableStateOf("buttons") }
+        var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        var scope = rememberCoroutineScope()
+
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            drawerContent = {
+                ModalDrawerSheet {
+                    Text("Menu", modifier = Modifier.padding(16.dp))
+                    HorizontalDivider()
+                    NavigationDrawerItem(
+                        icon = {Icon(Icons.Filled.AccountBox, contentDescription = "")},
+                        label = {Text("Buttons")},
+                        selected = false,
+                        onClick = {
+                            option = "buttons"
+                            scope.launch {
+                                drawerState.apply {
+                                    close()
+                                }
+                            }
+                        }
+                    )
+                    NavigationDrawerItem(
+                        icon = {Icon(Icons.Filled.AccountBox, contentDescription = "")},
+                        label = {Text("Floating Buttons")},
+                        selected = false,
+                        onClick = {
+                            option = "floating-buttons"
+                            scope.launch {
+                                drawerState.apply {
+                                    close()
+                                }
+                            }
+                        }
+                    )
+                    NavigationDrawerItem(
+                        icon = {Icon(Icons.Filled.AccountBox, contentDescription = "")},
+                        label = {Text("Progress")},
+                        selected = false,
+                        onClick = {
+                            option = "progress"
+                            scope.launch {
+                                drawerState.apply {
+                                    close()
+                                }
+                            }
+                        }
+                    )
+                    NavigationDrawerItem(
+                        icon = {Icon(Icons.Filled.AccountBox, contentDescription = "")},
+                        label = {Text("Chips")},
+                        selected = false,
+                        onClick = {
+                            option = "chips"
+                            scope.launch {
+                                drawerState.apply {
+                                    close()
+                                }
+                            }
+                        }
+                    )
+                    NavigationDrawerItem(
+                        icon = {Icon(Icons.Filled.AccountBox, contentDescription = "")},
+                        label = {Text("Sliders")},
+                        selected = false,
+                        onClick = {
+                            option = "sliders"
+                            scope.launch {
+                                drawerState.apply {
+                                    close()
+                                }
+                            }
+                        }
+                    )
+                    NavigationDrawerItem(
+                        icon = {Icon(Icons.Filled.AccountBox, contentDescription = "")},
+                        label = {Text("Switches")},
+                        selected = false,
+                        onClick = {
+                            option = "switches"
+                            scope.launch {
+                                drawerState.apply {
+                                    close()
+                                }
+                            }
+                        }
+                    )
+                    NavigationDrawerItem(
+                        icon = {Icon(Icons.Filled.AccountBox, contentDescription = "")},
+                        label = {Text("Badges")},
+                        selected = false,
+                        onClick = {
+                            option = "badges"
+                            scope.launch {
+                                drawerState.apply {
+                                    close()
+                                }
+                            }
+                        }
+                    )
+                    NavigationDrawerItem(
+                        icon = {Icon(Icons.Filled.AccountBox, contentDescription = "")},
+                        label = {Text("SnackBars")},
+                        selected = false,
+                        onClick = {
+                            option = "snack-bars"
+                            scope.launch {
+                                drawerState.apply {
+                                    close()
+                                }
+                            }
+                        }
+                    )
+                    NavigationDrawerItem(
+                        icon = {Icon(Icons.Filled.AccountBox, contentDescription = "")},
+                        label = {Text("Alert Dialogs")},
+                        selected = false,
+                        onClick = {
+                            option = "alertdialogs"
+                            scope.launch {
+                                drawerState.apply {
+                                    close()
+                                }
+                            }
+                        }
+                    )
+                }
+            }
+        ) {
+            Column{
+                when (option){
+                    "buttons" -> { Buttons() }
+                    "floating-buttons" -> { FloatingButtons() }
+                    "progress" -> { Progress() }
+                    "chips" -> { Chips() }
+                    "sliders" -> { Sliders() }
+                    "switches" -> { Switches() }
+                    "badges" -> { Badges() }
+                    "snack-bars" -> { SnackBars() }
+                    "alertdialogs" ->{ AlertDialogs() }
+                }
+            }
+        }
     }
 }
 
