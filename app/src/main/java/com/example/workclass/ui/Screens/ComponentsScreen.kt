@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -18,9 +19,14 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Warning
@@ -36,7 +42,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.workclass.R
 import com.example.workclass.data.model.MenuModel
+import com.example.workclass.data.model.PostCardModel
+import com.example.workclass.ui.Components.PostCardComponent
 import kotlinx.coroutines.launch
 
 @Composable
@@ -50,7 +59,8 @@ fun ComponentsScreen(navController: NavHostController){
         MenuModel(6,"Switches", "switches", Icons.Filled.Create),
         MenuModel(7,"Badges", "badges", Icons.Filled.ShoppingCart),
         MenuModel(8,"Snack Bars", "snack-bars", Icons.Filled.Add),
-        MenuModel(9,"Alert Dialog", "alertdialogs", Icons.Filled.Warning)
+        MenuModel(9,"Alert Dialog", "alertdialogs", Icons.Filled.Warning),
+        MenuModel(10,"Bars", "bars", Icons.Filled.Settings)
     )
         var option by remember { mutableStateOf("buttons") }
         var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -93,6 +103,7 @@ fun ComponentsScreen(navController: NavHostController){
                     "badges" -> { Badges() }
                     "snack-bars" -> { SnackBars() }
                     "alertdialogs" ->{ AlertDialogs() }
+                    "bars" -> { Bars() }
             }
         }
     }
@@ -423,5 +434,77 @@ fun AlertDialogs(){
             Text("Delete file")
         }
         Text(selectedOption)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Bars(){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ){
+        LargeTopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Black,
+                titleContentColor = Color.White
+            ),
+            title = {Text("Screen Title")},
+            actions = {
+                IconButton(onClick = {}) {
+                    Icon(imageVector = Icons.Filled.Search, contentDescription = "Search button")
+                }
+                IconButton(onClick = {}) {
+                    Icon(imageVector = Icons.Filled.Settings, contentDescription = "Settings button")
+                }
+            }
+        )
+        val arrayPost = arrayOf(
+            PostCardModel(1,"title 1", "text 1", R.drawable.astridix),
+            PostCardModel(2,"title 2", "text 2", R.drawable.astridix),
+            PostCardModel(3,"title 3", "text 3", R.drawable.astridix)
+        )
+        LazyRow(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1f)
+        ){
+            items(arrayPost){item -> PostCardComponent(item.id, item.title, item.text, item.image) }
+        }
+        BottomAppBar(
+            containerColor = Color.DarkGray,
+            contentColor = Color.White
+        ) {
+            IconButton(
+                modifier = Modifier.weight(1f),
+                onClick = {}
+            ) {
+                Icon(imageVector = Icons.Filled.Info, contentDescription = "")
+            }
+            IconButton(
+                modifier = Modifier.weight(1f),
+                onClick = {}
+            ) {
+                Icon(imageVector = Icons.Filled.Create, contentDescription = "")
+            }
+            IconButton(
+                modifier = Modifier.weight(1f),
+                onClick = {}
+            ) {
+                Icon(imageVector = Icons.Filled.Notifications, contentDescription = "")
+            }
+            IconButton(
+                modifier = Modifier.weight(1f),
+                onClick = {}
+            ) {
+                Icon(imageVector = Icons.Filled.Star, contentDescription = "")
+            }
+            IconButton(
+                modifier = Modifier.weight(1f),
+                onClick = {}
+            ) {
+                Icon(imageVector = Icons.Filled.AccountBox, contentDescription = "")
+            }
+        }
     }
 }
