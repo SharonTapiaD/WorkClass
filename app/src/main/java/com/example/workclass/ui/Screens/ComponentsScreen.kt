@@ -47,6 +47,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.window.core.layout.WindowHeightSizeClass
+import androidx.window.core.layout.WindowWidthSizeClass
 import com.example.workclass.R
 import com.example.workclass.data.model.MenuModel
 import com.example.workclass.data.model.PostCardModel
@@ -452,8 +454,8 @@ fun Bars(){
     ){
         LargeTopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.Black,
-                titleContentColor = Color.White
+                containerColor = MaterialTheme.colorScheme.primary,
+                titleContentColor = MaterialTheme.colorScheme.secondary
             ),
             title = {Text("Screen Title")},
             actions = {
@@ -492,11 +494,12 @@ fun Bars(){
                 .weight(1f)
                 .fillMaxSize()
         ){
-
+            Adaptive()
         }
+
         BottomAppBar(
-            containerColor = Color.DarkGray,
-            contentColor = Color.White
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.secondary
         ) {
             IconButton(
                 modifier = Modifier.weight(1f),
@@ -545,9 +548,31 @@ fun Adaptive(){
     //Medium height > 480 dp < 900 dp Tablet Landscape Phone Portrait
     //Expanded height >= 900 dp Tablet Portrait
 
-    Column{
-        Text(windowsSize.toString())
-        Text(height.toString())
-        Text(width.toString())
+    val arrayPost = arrayOf(
+        PostCardModel(1,"title 1", "text 1", R.drawable.astridix),
+        PostCardModel(2,"title 2", "text 2", R.drawable.astridix),
+        PostCardModel(3,"title 3", "text 3", R.drawable.astridix),
+        PostCardModel(4,"title 4", "text 4", R.drawable.astridix),
+        PostCardModel(5,"title 5", "text 5", R.drawable.astridix),
+        PostCardModel(6,"title 6", "text 6", R.drawable.astridix),
+        PostCardModel(7,"title 7", "text 7", R.drawable.astridix),
+        PostCardModel(8,"title 8", "text 8", R.drawable.astridix),
+        PostCardModel(9,"title 9", "text 9", R.drawable.astridix)
+    )
+
+    if (width == WindowWidthSizeClass.COMPACT){
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ){
+            items(arrayPost){item -> PostCardComponent(item.id, item.title, item.text, item.image) }
+        }
+    } else if(height == WindowHeightSizeClass.COMPACT){
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ){
+            items(arrayPost){item -> PostCardCompactComponent(item.id, item.title, item.text, item.image) }
+        }
     }
 }
