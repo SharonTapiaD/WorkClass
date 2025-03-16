@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,9 +19,12 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
@@ -33,6 +38,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.*
@@ -45,6 +51,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowHeightSizeClass
@@ -55,6 +63,7 @@ import com.example.workclass.data.model.PostCardModel
 import com.example.workclass.ui.Components.PostCardCompactComponent
 import com.example.workclass.ui.Components.PostCardComponent
 import kotlinx.coroutines.launch
+import kotlin.math.exp
 
 @Composable
 fun ComponentsScreen(navController: NavHostController){
@@ -68,7 +77,13 @@ fun ComponentsScreen(navController: NavHostController){
         MenuModel(7,"Badges", "badges", Icons.Filled.ShoppingCart),
         MenuModel(8,"Snack Bars", "snack-bars", Icons.Filled.Add),
         MenuModel(9,"Alert Dialog", "alertdialogs", Icons.Filled.Warning),
-        MenuModel(10,"Bars", "bars", Icons.Filled.Settings)
+        MenuModel(10,"Bars", "bars", Icons.Filled.Settings),
+        MenuModel(11,"Text Fields", "text-field", Icons.Filled.ThumbUp),
+        MenuModel(12, "Outlined Text Fields", "outlined-text-field", Icons.Filled.Info),
+        MenuModel(13, "Auto Complete Text Fields", "auto-complete", Icons.Filled.AccountCircle),
+        MenuModel(14, "Check Box", "check-box", Icons.Filled.Done),
+        MenuModel(15, "Radio Buttons", "radio-buttons", Icons.Filled.Close),
+        MenuModel(16, "Dropdown Model", "dropdown-model", Icons.Filled.Build)
     )
         var option by remember { mutableStateOf("buttons") }
         var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -112,6 +127,12 @@ fun ComponentsScreen(navController: NavHostController){
                     "snack-bars" -> { SnackBars() }
                     "alertdialogs" ->{ AlertDialogs() }
                     "bars" -> { Bars() }
+                    "text-field" -> { textFields() }
+                    "outlined-text-field" -> { outlinedTextFields() }
+                    "auto-complete" -> { AutoCompleteTextFields() }
+                    "check-box" -> { checkBoxes() }
+                    "radio-buttons" -> { RadioButtons() }
+                    "dropdown-model" -> DropdownMenus()
             }
         }
     }
@@ -398,7 +419,7 @@ fun SnackBars(){
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun AlertDialogs(){
     Column(
@@ -467,27 +488,6 @@ fun Bars(){
                 }
             }
         )
-        /*
-        val arrayPost = arrayOf(
-            PostCardModel(1,"title 1", "text 1", R.drawable.astridix),
-            PostCardModel(2,"title 2", "text 2", R.drawable.astridix),
-            PostCardModel(3,"title 3", "text 3", R.drawable.astridix),
-            PostCardModel(4,"title 4", "text 4", R.drawable.astridix),
-            PostCardModel(5,"title 5", "text 5", R.drawable.astridix),
-            PostCardModel(6,"title 6", "text 6", R.drawable.astridix),
-            PostCardModel(7,"title 7", "text 7", R.drawable.astridix),
-            PostCardModel(8,"title 8", "text 8", R.drawable.astridix),
-            PostCardModel(9,"title 9", "text 9", R.drawable.astridix)
-        )
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 160.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f)
-        ){
-            items(arrayPost){item -> PostCardComponent(item.id, item.title, item.text, item.image) }
-        }
-        */
 
         Column(
             modifier = Modifier
@@ -573,6 +573,193 @@ fun Adaptive(){
                 .fillMaxSize()
         ){
             items(arrayPost){item -> PostCardCompactComponent(item.id, item.title, item.text, item.image) }
+        }
+    }
+}
+
+//Include new components 12/03/25
+
+@OptIn(ExperimentalMaterial3Api::class)
+//@Preview(showBackground = true)
+@Composable
+fun textFields(){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        var text by remember { mutableStateOf("") }
+        TextField(
+            value = text,
+            onValueChange = {text = it},
+            label = {Text("Ingresa tu nombre")}
+        )
+
+        var password by remember { mutableStateOf("") }
+        TextField(
+            value = password,
+            onValueChange = {password = it},
+            label = {Text("Contraseña")},
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+        )
+    }
+}
+
+//@Preview(showBackground = true)
+@Composable
+fun outlinedTextFields(){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        var text by remember { mutableStateOf("") }
+        OutlinedTextField(
+            value = text,
+            onValueChange = {text = it},
+            label = { Text("Nombre") },
+            isError = text.isEmpty(),
+            supportingText = {
+                if(text.isEmpty()){
+                    Text("Este campo es obligatorio")
+                }
+            }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+//@Preview(showBackground = true)
+@Composable
+fun AutoCompleteTextFields(){
+    val countries = listOf("México", "España", "Argentina", "Colombia")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
+        ) {
+            TextField(
+                value = selectedText,
+                onValueChange = {selectedText = it},
+                label = {Text("Selecciona un país")},
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                modifier = Modifier.menuAnchor()
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = {expanded = false}
+            ) {
+                countries.forEach { country ->
+                    DropdownMenuItem(
+                        text = { Text(country) },
+                        onClick = {
+                            selectedText = country
+                            expanded = false
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+//@Preview(showBackground = true)
+@Composable
+fun checkBoxes(){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        var checked by remember { mutableStateOf(true) }
+        Checkbox(
+            checked = checked,
+            onCheckedChange = {checked = it}
+        )
+        var checked2 by remember { mutableStateOf(false) }
+        Checkbox(
+            checked = checked2,
+            onCheckedChange = {checked2 = it}
+        )
+    }
+}
+
+//@Preview(showBackground = true)
+@Composable
+fun RadioButtons(){
+    val option = listOf("Opción 1", "Opción 2", "Opción 3")
+    var selectedOption by remember { mutableStateOf(option[0]) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        option.forEach{ option ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                RadioButton(
+                    selected = (option == selectedOption),
+                    onClick = {selectedOption = option}
+                )
+                Text(text = option, modifier = Modifier.padding(start = 8.dp))
+            }
+        }
+    }
+}
+
+//@Preview(showBackground = true)
+@Composable
+fun DropdownMenus(){
+    val options = listOf("Opción 1", "Opción 2", "Opción 3")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf(options[0]) }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        Box(){
+            Button(onClick = {expanded = true}) {
+                Text(selectedOption)
+            }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = {expanded = false}
+            ){
+                options.forEach { option ->
+                    DropdownMenuItem(
+                        text = { Text(option) },
+                        onClick = {
+                            selectedOption = option
+                            expanded = false
+                        }
+                    )
+                }
+            }
         }
     }
 }
