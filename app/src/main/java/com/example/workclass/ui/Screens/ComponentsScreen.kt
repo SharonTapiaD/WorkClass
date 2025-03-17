@@ -1,5 +1,6 @@
 package com.example.workclass.ui.Screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -7,11 +8,16 @@ import androidx.navigation.NavHostController
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import java.util.Locale
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -24,10 +30,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -50,11 +58,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
 import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.example.workclass.R
@@ -63,6 +74,10 @@ import com.example.workclass.data.model.PostCardModel
 import com.example.workclass.ui.Components.PostCardCompactComponent
 import com.example.workclass.ui.Components.PostCardComponent
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import kotlin.math.exp
 
 @Composable
@@ -83,7 +98,11 @@ fun ComponentsScreen(navController: NavHostController){
         MenuModel(13, "Auto Complete Text Fields", "auto-complete", Icons.Filled.AccountCircle),
         MenuModel(14, "Check Box", "check-box", Icons.Filled.Done),
         MenuModel(15, "Radio Buttons", "radio-buttons", Icons.Filled.Close),
-        MenuModel(16, "Dropdown Model", "dropdown-model", Icons.Filled.Build)
+        MenuModel(16, "Dropdown Model", "dropdown-model", Icons.Filled.Build),
+        MenuModel(17,"Date Picker", "date-picker", Icons.Filled.DateRange),
+        MenuModel(18, "Date Picker Colors", "date-picker-colors", Icons.Filled.ArrowDropDown),
+        MenuModel(19, "Date Picker Dialog", "date-picker-dialog", Icons.Filled.Build),
+        MenuModel(20, "Date Range Picker State", "date-range-picker-state", Icons.Filled.FavoriteBorder)
     )
         var option by remember { mutableStateOf("buttons") }
         var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -132,7 +151,11 @@ fun ComponentsScreen(navController: NavHostController){
                     "auto-complete" -> { AutoCompleteTextFields() }
                     "check-box" -> { checkBoxes() }
                     "radio-buttons" -> { RadioButtons() }
-                    "dropdown-model" -> DropdownMenus()
+                    "dropdown-model" -> { DropdownMenus() }
+                    "date-picker" -> { datePickers() }
+                    "date-picker-colors" -> { datePickerColors() }
+                    "date-picker-dialog" -> { datePickerDialog() }
+                    "date-range-picker-state" -> { dateRangePickerState() }
             }
         }
     }
@@ -760,6 +783,111 @@ fun DropdownMenus(){
                     )
                 }
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+//@Preview(showBackground = true)
+@Composable
+fun datePickers(){
+    val datePickerState = rememberDatePickerState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        DatePicker(state = datePickerState)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(onClick = {
+            val selectedDate = datePickerState.selectedDateMillis?.let {
+                Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
+            }
+        }) {
+            Text("Confirmar Fecha")
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+//@Preview(showBackground = true)
+@Composable
+fun datePickerColors(){
+    val colors = DatePickerDefaults.colors(
+        containerColor = Color.Black,
+        titleContentColor = Color.White,
+        headlineContentColor = Color.Cyan,
+        weekdayContentColor = Color.Green,
+        subheadContentColor = Color.Magenta
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        DatePicker(state = rememberDatePickerState(), colors = colors)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun datePickerDialog(){
+    var showDialog by remember { mutableStateOf(false) }
+    val datePickerState = rememberDatePickerState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        Button(onClick = { showDialog = true }){
+            Text("Seleccionar Fecha")
+        }
+
+        if(showDialog){
+            DatePickerDialog(
+                onDismissRequest = {showDialog = false},
+                confirmButton = {
+                    TextButton(onClick = {showDialog = false}) {
+                        Text("Aceptar")
+                    }
+                }
+            ) {
+                DatePicker(state = datePickerState)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun dateRangePickerState(){
+    val rangePickerState = rememberDateRangePickerState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        DateRangePicker(state = rangePickerState)
+        Button(onClick = {
+            val startDate = rangePickerState.selectedStartDateMillis?.let {
+                Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
+            }
+            val endDate = rangePickerState.selectedEndDateMillis?.let {
+                Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
+            }
+        }){
+            Text("Confirmar rango")
         }
     }
 }
