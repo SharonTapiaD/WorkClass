@@ -33,5 +33,10 @@ fun MainMenuScreen(navController: NavHostController){
         ) {
             Text("Go to Wattpad Interface")
         }
+        Button(
+            onClick = {navController.navigate("components_screen")}
+        ) {
+            Text("Go to Components Screen")
+        }
     }
 }
