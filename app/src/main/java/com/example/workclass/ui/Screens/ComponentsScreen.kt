@@ -26,12 +26,14 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
@@ -73,12 +75,17 @@ import com.example.workclass.data.model.MenuModel
 import com.example.workclass.data.model.PostCardModel
 import com.example.workclass.ui.Components.PostCardCompactComponent
 import com.example.workclass.ui.Components.PostCardComponent
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import kotlin.math.exp
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.pullRefreshIndicatorTransform
 
 @Composable
 fun ComponentsScreen(navController: NavHostController){
@@ -102,7 +109,8 @@ fun ComponentsScreen(navController: NavHostController){
         MenuModel(17,"Date Picker", "date-picker", Icons.Filled.DateRange),
         MenuModel(18, "Date Picker Colors", "date-picker-colors", Icons.Filled.ArrowDropDown),
         MenuModel(19, "Date Picker Dialog", "date-picker-dialog", Icons.Filled.Build),
-        MenuModel(20, "Date Range Picker State", "date-range-picker-state", Icons.Filled.FavoriteBorder)
+        MenuModel(20, "Date Range Picker State", "date-range-picker-state", Icons.Filled.FavoriteBorder),
+        MenuModel(21, "Pull To Refresh", "pull-to-refresh", Icons.Filled.Call)
     )
         var option by remember { mutableStateOf("buttons") }
         var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -156,6 +164,7 @@ fun ComponentsScreen(navController: NavHostController){
                     "date-picker-colors" -> { datePickerColors() }
                     "date-picker-dialog" -> { datePickerDialog() }
                     "date-range-picker-state" -> { dateRangePickerState() }
+                    "pull-to-refresh" -> { pullRefresh() }
             }
         }
     }
@@ -835,7 +844,7 @@ fun datePickerColors(){
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun datePickerDialog(){
     var showDialog by remember { mutableStateOf(false) }
@@ -867,7 +876,7 @@ fun datePickerDialog(){
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun dateRangePickerState(){
     val rangePickerState = rememberDateRangePickerState()
@@ -889,5 +898,53 @@ fun dateRangePickerState(){
         }){
             Text("Confirmar rango")
         }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+//@Preview(showBackground = true)
+@Composable
+fun pullRefresh(){
+    var isRefreshing by remember { mutableStateOf(false) }
+    var itemList by remember { mutableStateOf(List(10){it + 1})}
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            kotlinx.coroutines.GlobalScope.launch {
+                delay(2000)
+                itemList = (1..10).shuffled()
+                isRefreshing = false
+            }
+        }
+    )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pullRefresh(pullRefreshState)
+    ){
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ){
+            items(itemList){ item ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    elevation = CardDefaults.cardElevation(4.dp)
+                ){
+                    Text(
+                        text = "Elemento $item",
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+        }
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
     }
 }
