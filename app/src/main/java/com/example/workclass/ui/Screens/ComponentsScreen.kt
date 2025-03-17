@@ -1,6 +1,10 @@
 package com.example.workclass.ui.Screens
 
+import android.provider.MediaStore.Audio.Radio
+import android.widget.RadioButton
+import android.widget.ToggleButton
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +29,7 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
@@ -44,6 +49,7 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -88,6 +94,9 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.pullRefreshIndicatorTransform
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusModifier
 
 @Composable
 fun ComponentsScreen(navController: NavHostController){
@@ -105,15 +114,13 @@ fun ComponentsScreen(navController: NavHostController){
         MenuModel(11,"Text Fields", "text-field", Icons.Filled.ThumbUp),
         MenuModel(12, "Outlined Text Fields", "outlined-text-field", Icons.Filled.Info),
         MenuModel(13, "Auto Complete Text Fields", "auto-complete", Icons.Filled.AccountCircle),
-        MenuModel(14, "Check Box", "check-box", Icons.Filled.Done),
-        MenuModel(15, "Radio Buttons", "radio-buttons", Icons.Filled.Close),
-        MenuModel(16, "Dropdown Model", "dropdown-model", Icons.Filled.Build),
-        MenuModel(17,"Date Picker", "date-picker", Icons.Filled.DateRange),
-        MenuModel(18, "Date Picker Colors", "date-picker-colors", Icons.Filled.ArrowDropDown),
-        MenuModel(19, "Date Picker Dialog", "date-picker-dialog", Icons.Filled.Build),
-        MenuModel(20, "Date Range Picker State", "date-range-picker-state", Icons.Filled.FavoriteBorder),
-        MenuModel(21, "Pull To Refresh", "pull-to-refresh", Icons.Filled.Call),
-        MenuModel(22, "Modal Bottom Sheet", "modal-bottom-sheet", Icons.Filled.Delete),
+        MenuModel(14,"Date Picker", "date-picker", Icons.Filled.DateRange),
+        MenuModel(15, "Date Picker Dialog", "date-picker-dialog", Icons.Filled.Build),
+        MenuModel(16, "Date Range Picker State", "date-range-picker-state", Icons.Filled.FavoriteBorder),
+        MenuModel(17, "Pull To Refresh", "pull-to-refresh", Icons.Filled.Call),
+        MenuModel(18, "Modal Bottom Sheet", "modal-bottom-sheet", Icons.Filled.Delete),
+        MenuModel(19, "Single Choice Segmented Button", "single-choice", Icons.Filled.Face),
+        MenuModel(20, "Multi Choice Segmented Button", "multi-choice", Icons.Filled.LocationOn)
     )
         var option by remember { mutableStateOf("buttons") }
         var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -160,15 +167,13 @@ fun ComponentsScreen(navController: NavHostController){
                     "text-field" -> { textFields() }
                     "outlined-text-field" -> { outlinedTextFields() }
                     "auto-complete" -> { AutoCompleteTextFields() }
-                    "check-box" -> { checkBoxes() }
-                    "radio-buttons" -> { RadioButtons() }
-                    "dropdown-model" -> { DropdownMenus() }
                     "date-picker" -> { datePickers() }
-                    "date-picker-colors" -> { datePickerColors() }
                     "date-picker-dialog" -> { datePickerDialog() }
                     "date-range-picker-state" -> { dateRangePickerState() }
                     "pull-to-refresh" -> { pullRefresh() }
                     "modal-bottom-sheet" -> { modalBottomSheet() }
+                    "single-choice" -> { SingleChoiceSegmentedButton() }
+                    "multi-choice" -> { MultiChoiceSegmentedButton() }
             }
         }
     }
@@ -715,91 +720,6 @@ fun AutoCompleteTextFields(){
     }
 }
 
-//@Preview(showBackground = true)
-@Composable
-fun checkBoxes(){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
-    ){
-        var checked by remember { mutableStateOf(true) }
-        Checkbox(
-            checked = checked,
-            onCheckedChange = {checked = it}
-        )
-        var checked2 by remember { mutableStateOf(false) }
-        Checkbox(
-            checked = checked2,
-            onCheckedChange = {checked2 = it}
-        )
-    }
-}
-
-//@Preview(showBackground = true)
-@Composable
-fun RadioButtons(){
-    val option = listOf("Opción 1", "Opción 2", "Opción 3")
-    var selectedOption by remember { mutableStateOf(option[0]) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
-    ){
-        option.forEach{ option ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                RadioButton(
-                    selected = (option == selectedOption),
-                    onClick = {selectedOption = option}
-                )
-                Text(text = option, modifier = Modifier.padding(start = 8.dp))
-            }
-        }
-    }
-}
-
-//@Preview(showBackground = true)
-@Composable
-fun DropdownMenus(){
-    val options = listOf("Opción 1", "Opción 2", "Opción 3")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(options[0]) }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
-    ){
-        Box(){
-            Button(onClick = {expanded = true}) {
-                Text(selectedOption)
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = {expanded = false}
-            ){
-                options.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text(option) },
-                        onClick = {
-                            selectedOption = option
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 //@Preview(showBackground = true)
 @Composable
@@ -822,28 +742,6 @@ fun datePickers(){
         }) {
             Text("Confirmar Fecha")
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-//@Preview(showBackground = true)
-@Composable
-fun datePickerColors(){
-    val colors = DatePickerDefaults.colors(
-        containerColor = Color.Black,
-        titleContentColor = Color.White,
-        headlineContentColor = Color.Cyan,
-        weekdayContentColor = Color.Green,
-        subheadContentColor = Color.Magenta
-    )
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
-    ){
-        DatePicker(state = rememberDatePickerState(), colors = colors)
     }
 }
 
@@ -985,6 +883,129 @@ fun modalBottomSheet(){
                     Text("Cerrar")
                 }
             }
+        }
+    }
+}
+
+//@Preview(showBackground = true)
+@Composable
+fun SingleChoiceSegmentedButton(){
+    val options = listOf("Día", "Mes", "Año")
+    var selectedOption by remember { mutableStateOf(0) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.Center
+    ){
+        options.forEachIndexed{ index, label ->
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 4.dp)
+                    .background(
+                        color = if(index == selectedOption) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.surfaceVariant,
+                        shape = when(index){
+                            0 -> MaterialTheme.shapes.small.copy(
+                                topEnd = CornerSize(0),
+                                bottomEnd = CornerSize(0)
+                            )
+                            options.lastIndex -> MaterialTheme.shapes.small.copy(
+                                topStart = CornerSize(0),
+                                bottomStart = CornerSize(0)
+                            )
+                            else -> MaterialTheme.shapes.small.copy(
+                                topStart = CornerSize(0),
+                                topEnd = CornerSize(0),
+                                bottomStart = CornerSize(0),
+                                bottomEnd = CornerSize(0)
+                            )
+                        }
+                    )
+                    .clickable { selectedOption = index }
+                    .padding(vertical = 12.dp),
+                contentAlignment = Alignment.Center
+            ){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    RadioButton(
+                        selected = (index == selectedOption),
+                        onClick = {selectedOption = index},
+                        colors = RadioButtonDefaults.colors(
+                            selectedColor = if(index == selectedOption) MaterialTheme.colorScheme.onPrimary
+                            else MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedColor = Color.Transparent
+                        ),
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = label,
+                        color = if(index == selectedOption) MaterialTheme.colorScheme.onPrimary
+                        else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun MultiChoiceSegmentedButton(){
+    val selectedOptions = remember {
+        mutableStateListOf(false, false, false)
+    }
+    val options = listOf("Walk", "Ride", "Drive")
+
+    MultiChoiceSegmentedButtonRow {
+        options.forEachIndexed { index, label ->
+            SegmentedButton(
+                shape = SegmentedButtonDefaults.itemShape(
+                    index = index,
+                    count = options.size
+                ),
+                checked = selectedOptions[index],
+                onCheckedChange = {
+                    selectedOptions[index] = !selectedOptions[index]
+                },
+                colors = SegmentedButtonDefaults.colors(
+                    activeContainerColor = when (label) {
+                        "Walk" -> Color(0xFFF8BBD0)
+                        "Ride" -> Color(0xFFFFD1DC)
+                        "Drive" -> Color(0xFFE1BEE7)
+                        else -> Color(0xFFCE93D8)
+                    },
+                    inactiveContainerColor = Color(0xFFFCE4EC),
+                    activeContentColor = Color.White,
+                    inactiveContentColor = Color(0xFF880E4F)
+                ),
+                icon = { SegmentedButtonDefaults.Icon(selectedOptions[index]) },
+                label = {
+                    when (label) {
+                        "Walk" -> Icon(
+                            imageVector =
+                            Icons.Filled.Face,
+                            contentDescription = "Directions Walk"
+                        )
+                        "Ride" -> Icon(
+                            imageVector =
+                            Icons.Filled.ThumbUp,
+                            contentDescription = "Directions Bus"
+                        )
+                        "Drive" -> Icon(
+                            imageVector =
+                            Icons.Filled.LocationOn,
+                            contentDescription = "Directions Car"
+                        )
+                    }
+                }
+            )
         }
     }
 }
