@@ -38,7 +38,9 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
@@ -110,7 +112,8 @@ fun ComponentsScreen(navController: NavHostController){
         MenuModel(18, "Date Picker Colors", "date-picker-colors", Icons.Filled.ArrowDropDown),
         MenuModel(19, "Date Picker Dialog", "date-picker-dialog", Icons.Filled.Build),
         MenuModel(20, "Date Range Picker State", "date-range-picker-state", Icons.Filled.FavoriteBorder),
-        MenuModel(21, "Pull To Refresh", "pull-to-refresh", Icons.Filled.Call)
+        MenuModel(21, "Pull To Refresh", "pull-to-refresh", Icons.Filled.Call),
+        MenuModel(22, "Modal Bottom Sheet", "modal-bottom-sheet", Icons.Filled.Delete),
     )
         var option by remember { mutableStateOf("buttons") }
         var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -165,6 +168,7 @@ fun ComponentsScreen(navController: NavHostController){
                     "date-picker-dialog" -> { datePickerDialog() }
                     "date-range-picker-state" -> { dateRangePickerState() }
                     "pull-to-refresh" -> { pullRefresh() }
+                    "modal-bottom-sheet" -> { modalBottomSheet() }
             }
         }
     }
@@ -946,5 +950,41 @@ fun pullRefresh(){
             state = pullRefreshState,
             modifier = Modifier.align(Alignment.TopCenter)
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+//@Preview(showBackground = true)
+@Composable
+fun modalBottomSheet(){
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    Button(onClick = {
+        showBottomSheet = true},
+        modifier = Modifier
+            .padding(16.dp)){
+        Text("Mostrar Bottom Sheet")
+    }
+
+    if(showBottomSheet){
+        ModalBottomSheet(
+            onDismissRequest = {showBottomSheet = false},
+            sheetState = sheetState
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
+            ){
+                Text("¡Este es un Bottom Modal Sheet!")
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = {showBottomSheet = false}){
+                    Text("Cerrar")
+                }
+            }
+        }
     }
 }
