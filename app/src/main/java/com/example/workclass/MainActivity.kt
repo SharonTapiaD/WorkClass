@@ -45,6 +45,7 @@ import com.example.workclass.ui.theme.WorkClassTheme
 import com.example.workclass.ui.Screens.MainMenuScreen
 import com.example.workclass.ui.Screens.TestScreen
 import com.example.workclass.ui.Screens.WattpadInterface
+import com.example.workclass.ui.Screens.LoginScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,5 +73,6 @@ fun SetupNavGraph(navController: NavHostController){
         composable("test_screen"){ TestScreen(navController) }
         composable("wattpad_interface"){ WattpadInterface(navController) }
         composable("components_screen"){ ComponentsScreen(navController) }
+        composable("login_screen"){ LoginScreen(navController) }
     }
 }
