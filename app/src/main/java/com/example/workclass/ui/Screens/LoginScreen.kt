@@ -1,6 +1,7 @@
 package com.example.workclass.ui.Screens
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.material3.Button
@@ -38,6 +39,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.workclass.data.ViewModel.UserViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workclass.data.model.UserModel
 
 @Composable
 fun LoginScreen(navController: NavController){
@@ -54,9 +58,9 @@ fun LoginScreen(navController: NavController){
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun LoginForm(){
+fun LoginForm(viewModel: UserViewModel = viewModel()){
     val context = LocalContext.current
     Card(
         colors = CardDefaults.cardColors(
@@ -120,7 +124,7 @@ fun LoginForm(){
                     .fillMaxWidth()
                     .padding(0.dp, 10.dp),
                 shape = CutCornerShape(4.dp),
-                onClick = { tryLogin(user, password, context) }
+                onClick = { tryLogin(user, password, context, viewModel) }
             ) {
                 Text("LOG IN")
             }
@@ -142,12 +146,18 @@ fun LoginForm(){
     }
 }
 
-fun tryLogin(user: String, password: String, context: Context){
+fun tryLogin(user: String, password: String, context: Context, viewModel: UserViewModel){
     if(user == "" || password == ""){
         Toast.makeText(
             context,
             "User or Password cannot be empty",
             Toast.LENGTH_SHORT
         ).show()
+    } else {
+        val user_Model = UserModel(0,"", user, password)
+        viewModel.loginApi(user_Model){ jsonResponse ->
+            val loginStatus = jsonResponse?.get("Login")?.asString
+            Log.d("debug", "LOGIN STATUS: $loginStatus")
+        }
     }
 }
