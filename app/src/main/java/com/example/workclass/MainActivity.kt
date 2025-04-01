@@ -39,6 +39,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import com.example.workclass.ui.Screens.AccountsScreen
 import com.example.workclass.ui.Screens.ComponentsScreen
 import com.example.workclass.ui.Screens.HomeScreen
 import com.example.workclass.ui.theme.WorkClassTheme
@@ -74,5 +75,6 @@ fun SetupNavGraph(navController: NavHostController){
         composable("wattpad_interface"){ WattpadInterface(navController) }
         composable("components_screen"){ ComponentsScreen(navController) }
         composable("login_screen"){ LoginScreen(navController) }
+        composable("accounts_screen"){ AccountsScreen(navController) }
     }
 }
