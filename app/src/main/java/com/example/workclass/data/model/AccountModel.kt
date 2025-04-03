@@ -6,5 +6,5 @@ data class AccountModel(
     var userName: String = "",
     var password: String = "",
     var descripcion: String = "",
-    var imagenURL: String? = null
+    var imagenURL: String = ""
 )
