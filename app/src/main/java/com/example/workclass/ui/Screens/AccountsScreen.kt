@@ -38,7 +38,7 @@ fun AccountsScreen(navController: NavController, viewModel: AccountViewModel = v
 
     Column(){
         //Text("Account Screen")
-        TopBarComponent("Accounts", navController, "Accounts Screen")
+        TopBarComponent("Accounts", navController, "accounts_screen")
 
         //AccountCardComponent(1, "Name", "user@gmail.com", "")
         LaunchedEffect(Unit) {
@@ -60,7 +60,7 @@ fun AccountsScreen(navController: NavController, viewModel: AccountViewModel = v
                 AccountCardComponent(
                     account.id,
                     account.name,
-                    account.userName,
+                    account.username,
                     account.imagenURL,
                     onButtonClick = {
                         viewModel.getAccount(account.id){ response ->
@@ -87,7 +87,7 @@ fun AccountsScreen(navController: NavController, viewModel: AccountViewModel = v
             AccountDetailCardComponent(
                 accountDetail?.id ?: 0,
                 accountDetail?.name ?: "",
-                accountDetail?.userName ?: "",
+                accountDetail?.username ?: "",
                 accountDetail?.password ?: "",
                 accountDetail?.imagenURL ?: "",
                 accountDetail?.descripcion ?: ""

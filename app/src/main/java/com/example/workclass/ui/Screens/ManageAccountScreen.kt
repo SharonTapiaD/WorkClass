@@ -1,5 +1,8 @@
 package com.example.workclass.ui.Screens
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.content.MediaType.Companion.Text
 import androidx.compose.foundation.layout.Column
@@ -11,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -50,10 +54,10 @@ fun ManageAccountScreen(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            value = account.value.userName,
+            value = account.value.username,
             maxLines = 1,
             label = {"Account User Name"},
-            onValueChange = {account.value = account.value.copy(userName = it)}
+            onValueChange = {account.value = account.value.copy(username = it)}
         )
 
         OutlinedTextField(
@@ -79,10 +83,51 @@ fun ManageAccountScreen(
                 .fillMaxWidth()
                 .padding(0.dp, 10.dp),
             onClick = {
-
+                //TryCreateAccount(account, context, viewModel)
             }
         ) {
             Text(text = "Save Account")
         }
     }
 }
+
+/*
+fun TryCreateAccount(
+    accountState: MutableState<AccountModel>,
+    context: Context,
+    viewModel: AccountViewModel
+    ){
+    val accountS = accountState.value
+
+    if(
+        accountS.name.isEmpty() ||
+        accountS.username.isEmpty() ||
+        accountS.password.isEmpty() ||
+        accountS.descripcion.isEmpty()
+    ) {
+        Toast.makeText(
+            context,
+            "None of the fields can be empty",
+            Toast.LENGTH_SHORT
+        ).show()
+    } else{
+        viewModel.createAccount(accountS){ response ->
+            val createAccStatus = response?.get("store")?.asString
+            Log.d("debug", "Create account status: $createAccStatus")
+            if(createAccStatus == "success"){
+                Toast.makeText(
+                    context,
+                    "Account created successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else{
+                Toast.makeText(
+                    context,
+                    "Error creating account",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+}
+ */

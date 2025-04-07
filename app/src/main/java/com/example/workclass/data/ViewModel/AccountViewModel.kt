@@ -36,7 +36,7 @@ class AccountViewModel:ViewModel(){
         }
     }
 
-    fun createAccount(service: AccountModel, onResult: (JsonObject?) -> Unit) {
+    fun createAccount(service: AccountModel, onResult: (Response: JsonObject?) -> Unit) {
         viewModelScope.launch {
             try {
                 val response = api.addAccount(service)
@@ -45,7 +45,7 @@ class AccountViewModel:ViewModel(){
                     Log.d("debug", response.body().toString())
                     onResult(jsonResponse)
                 } else {
-                    Log.d("debug", "Error: ${response.body()}")
+                    Log.d("debug", "Error: ${response.errorBody()}")
                     onResult(null)
                 }
             } catch (exception: Exception) {
