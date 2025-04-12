@@ -9,8 +9,8 @@ data class AccountModel(
     var name: String = "",
     var username: String = "",
     var password: String = "",
-    var descripcion: String = "",
-    var imagenURL: String = ""
+    var description: String = "",
+    var imageURL: String = ""
 )
 
 @Entity
@@ -29,7 +29,7 @@ fun AccountModel.toAccountEntity(): AccountEntity{
         name = this.name,
         username = this.username,
         password = this.password,
-        description = this.descripcion,
-        imageURL = this.imagenURL,
+        description = this.description,
+        imageURL = this.imageURL,
     )
 }

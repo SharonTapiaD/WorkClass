@@ -7,18 +7,25 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.workclass.R
 
+//@Preview(showBackground = true)
 @Composable
 fun AccountDetailCardComponent(
     id: Int,
@@ -26,7 +33,8 @@ fun AccountDetailCardComponent(
     username: String,
     password: String,
     imageURL: String,
-    description: String
+    description: String,
+    onSaveClick: () -> Unit
 ){
     Column(){
         Row(
@@ -46,6 +54,7 @@ fun AccountDetailCardComponent(
                 contentDescription = "Account logo",
                 contentScale = ContentScale.FillBounds
             )
+
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -54,6 +63,7 @@ fun AccountDetailCardComponent(
                     modifier = Modifier
                         .padding(10.dp),
                     text = name,
+                    color = Color.Black,
                     fontSize = 40.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
@@ -61,6 +71,7 @@ fun AccountDetailCardComponent(
                     modifier = Modifier
                         .padding(1.dp),
                     text = username,
+                    color = Color.Black,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Light
                 )
@@ -68,6 +79,7 @@ fun AccountDetailCardComponent(
                     modifier = Modifier
                         .padding(1.dp),
                     text = password,
+                    color = Color.Black,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Light
                 )
@@ -75,10 +87,24 @@ fun AccountDetailCardComponent(
                     modifier = Modifier
                         .padding(1.dp),
                     text = description,
+                    color = Color.Black,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Light
                 )
             }
         }
+
+        IconButton(
+            modifier = Modifier.padding(20.dp,0.dp,0.dp,0.dp),
+            onClick = {
+                onSaveClick()
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Star,
+                contentDescription = "Save as favorite"
+            )
+        }
+
     }
 }

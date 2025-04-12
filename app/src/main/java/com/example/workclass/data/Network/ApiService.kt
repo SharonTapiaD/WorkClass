@@ -11,12 +11,12 @@ import retrofit2.http.Path
 
 interface ApiService {
     @POST ("user")
-    suspend fun login(@Body user: UserModel): Response<JsonObject>
+    suspend fun login(@Body username: UserModel): Response<JsonObject>
 
     @GET("service")
     suspend fun getAccounts(): Response<List<AccountModel>>
 
-    @GET("service/(id)")
+    @GET("service/{id}")
     suspend fun getAccount(@Path("id") id: Int): Response<AccountModel>
 
     @POST("service")

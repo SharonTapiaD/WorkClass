@@ -157,7 +157,7 @@ fun tryLogin(user: String, password: String, context: Context, viewModel: UserVi
     } else {
         val user_Model = UserModel(0,"", user, password)
         viewModel.loginApi(user_Model){ jsonResponse ->
-            val loginStatus = jsonResponse?.get("Login")?.asString
+            val loginStatus = jsonResponse?.get("login")?.asString
             Log.d("debug", "LOGIN STATUS: $loginStatus")
             if(loginStatus == "success"){
                 navController.navigate("accounts_screen")

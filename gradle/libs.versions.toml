@@ -20,6 +20,7 @@ okhttp = "4.11.0"
 retrofit = "2.9.0"
 retrofit2KotlinxSerializationConverterVersion = "1.0.0"
 storage = "1.5.0"
+media3Database = "1.6.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +49,7 @@ androidx-storage = { group = "androidx.test.services", name = "storage", version
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+androidx-media3-database = { group = "androidx.media3", name = "media3-database", version.ref = "media3Database" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

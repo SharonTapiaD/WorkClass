@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.adaptive.android)
     implementation(libs.androidx.storage)
+    implementation(libs.androidx.media3.database)
     //implementation(libs.androidx.material3.adaptive.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -77,4 +78,6 @@ dependencies {
     implementation (libs.androidx.lifecycle.runtime.ktx.v262)
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
 }

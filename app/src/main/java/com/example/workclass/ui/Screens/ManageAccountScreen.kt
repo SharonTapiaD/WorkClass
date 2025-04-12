@@ -72,10 +72,10 @@ fun ManageAccountScreen(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            value = account.value.descripcion,
+            value = account.value.description,
             maxLines = 1,
             label = {"Account Description"},
-            onValueChange = {account.value = account.value.copy(descripcion = it)}
+            onValueChange = {account.value = account.value.copy(description = it)}
         )
 
         FilledTonalButton(
@@ -83,7 +83,7 @@ fun ManageAccountScreen(
                 .fillMaxWidth()
                 .padding(0.dp, 10.dp),
             onClick = {
-                //TryCreateAccount(account, context, viewModel)
+                TryCreateAccount(account, context, viewModel)
             }
         ) {
             Text(text = "Save Account")
@@ -91,7 +91,6 @@ fun ManageAccountScreen(
     }
 }
 
-/*
 fun TryCreateAccount(
     accountState: MutableState<AccountModel>,
     context: Context,
@@ -103,16 +102,17 @@ fun TryCreateAccount(
         accountS.name.isEmpty() ||
         accountS.username.isEmpty() ||
         accountS.password.isEmpty() ||
-        accountS.descripcion.isEmpty()
+        accountS.description.isEmpty()
     ) {
         Toast.makeText(
             context,
             "None of the fields can be empty",
             Toast.LENGTH_SHORT
         ).show()
+        return
     } else{
-        viewModel.createAccount(accountS){ response ->
-            val createAccStatus = response?.get("store")?.asString
+        viewModel.createAccount(accountS){ jsonResponse ->
+            val createAccStatus = jsonResponse?.get("store")?.asString
             Log.d("debug", "Create account status: $createAccStatus")
             if(createAccStatus == "success"){
                 Toast.makeText(
@@ -130,4 +130,3 @@ fun TryCreateAccount(
         }
     }
 }
- */

@@ -23,10 +23,17 @@ import com.example.workclass.data.ViewModel.AccountViewModel
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.example.workclass.data.DataBase.AppDatabase
+import com.example.workclass.data.DataBase.DatabaseProvider
 import com.example.workclass.data.model.AccountModel
+import com.example.workclass.data.model.toAccountEntity
 import com.example.workclass.ui.Components.AccountCardComponent
 import com.example.workclass.ui.Components.AccountDetailCardComponent
 import com.example.workclass.ui.Components.TopBarComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,6 +42,8 @@ fun AccountsScreen(navController: NavController, viewModel: AccountViewModel = v
     var showButtonSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     var accountDetail by remember { mutableStateOf <AccountModel?> (null) }
+    val db: AppDatabase = DatabaseProvider.getDatabase(LocalContext.current)
+    val accountDao = db.accountDao()
 
     Column(){
         //Text("Account Screen")
@@ -46,7 +55,7 @@ fun AccountsScreen(navController: NavController, viewModel: AccountViewModel = v
                 if(response.isSuccessful){
                     accounts = response.body() ?: emptyList()
                 } else {
-                    Log.d("debug", "Failed to load data")
+                    Log.d("debug", "Failed to load data: ${response.code()}")
                 }
             }
         }
@@ -61,7 +70,7 @@ fun AccountsScreen(navController: NavController, viewModel: AccountViewModel = v
                     account.id,
                     account.name,
                     account.username,
-                    account.imagenURL,
+                    account.imageURL,
                     onButtonClick = {
                         viewModel.getAccount(account.id){ response ->
                             if(response.isSuccessful){
@@ -89,8 +98,19 @@ fun AccountsScreen(navController: NavController, viewModel: AccountViewModel = v
                 accountDetail?.name ?: "",
                 accountDetail?.username ?: "",
                 accountDetail?.password ?: "",
-                accountDetail?.imagenURL ?: "",
-                accountDetail?.descripcion ?: ""
+                accountDetail?.imageURL ?: "",
+                accountDetail?.description ?: "",
+                onSaveClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try{
+                            accountDetail?.let { accountDao.insert(it.toAccountEntity())}
+                            Log.d("debug-db", "Account inserted successfully")
+                        } catch(exception: Exception){
+                            Log.d("debug-db", "ERROR: $exception")
+                        }
+                    }
+                    showButtonSheet = false
+                }
             )
         }
     }

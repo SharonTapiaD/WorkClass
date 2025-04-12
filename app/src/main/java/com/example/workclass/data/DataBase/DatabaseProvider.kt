@@ -4,13 +4,13 @@ import android.content.Context
 import androidx.room.Room
 
 object DatabaseProvider{
-    private var instance: AppDataBase? = null
+    private var instance: AppDatabase? = null
 
-    fun getDatabase(context: Context): AppDataBase{
+    fun getDatabase(context: Context): AppDatabase{
         return instance ?: synchronized(this){
             val db = Room.databaseBuilder(
                 context.applicationContext,
-                AppDataBase::class.java, "app_db"
+                AppDatabase::class.java, "app_db"
             ).build()
             instance = db
             db

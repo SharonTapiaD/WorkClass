@@ -30,6 +30,7 @@ class AccountViewModel:ViewModel(){
             try{
                 val response = api.getAccount(id)
                 Log.d("debug", response.toString())
+                onResult(response)
             } catch(exception: Exception){
                 Log.d("debug", "API ERROR: $exception")
             }
@@ -42,7 +43,7 @@ class AccountViewModel:ViewModel(){
                 val response = api.addAccount(service)
                 if (response.isSuccessful) {
                     val jsonResponse = response.body()
-                    Log.d("debug", response.body().toString())
+                    Log.d("debug", "$jsonResponse")//response.body().toString())
                     onResult(jsonResponse)
                 } else {
                     Log.d("debug", "Error: ${response.errorBody()}")
