@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.workclass.R
 
@@ -34,7 +36,8 @@ fun AccountDetailCardComponent(
     password: String,
     imageURL: String,
     description: String,
-    onSaveClick: () -> Unit
+    onSaveClick: () -> Unit,
+    navController: NavController
 ){
     Column(){
         Row(
@@ -54,57 +57,109 @@ fun AccountDetailCardComponent(
                 contentDescription = "Account logo",
                 contentScale = ContentScale.FillBounds
             )
+            IconButton(
+                modifier = Modifier.padding(20.dp,0.dp,0.dp,0.dp),
+                onClick = {
+                    onSaveClick()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = "Save as favorite"
+                )
+            }
+            IconButton(
+                modifier = Modifier.padding(20.dp,0.dp,0.dp,0.dp),
+                onClick = {
+                    navController.navigate("manage_account_screen/${id}")
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Create,
+                    contentDescription = "Edit Account"
+                )
+            }
+        }
 
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+        Column(
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ){
                 Text(
-                    modifier = Modifier
-                        .padding(10.dp),
+                    text = "Name",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
                     text = name,
-                    color = Color.Black,
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(
+                    text = "Username",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
                 )
                 Text(
-                    modifier = Modifier
-                        .padding(1.dp),
                     text = username,
-                    color = Color.Black,
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Light
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(
+                    text = "Password",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
                 )
                 Text(
-                    modifier = Modifier
-                        .padding(1.dp),
                     text = password,
-                    color = Color.Black,
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Light
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(
+                    text = "Description",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium
                 )
                 Text(
-                    modifier = Modifier
-                        .padding(1.dp),
                     text = description,
-                    color = Color.Black,
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Light
+                    fontWeight = FontWeight.Medium
                 )
             }
         }
-
-        IconButton(
-            modifier = Modifier.padding(20.dp,0.dp,0.dp,0.dp),
-            onClick = {
-                onSaveClick()
-            }
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Star,
-                contentDescription = "Save as favorite"
-            )
-        }
-
     }
 }

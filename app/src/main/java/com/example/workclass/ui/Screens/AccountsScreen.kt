@@ -110,7 +110,8 @@ fun AccountsScreen(navController: NavController, viewModel: AccountViewModel = v
                         }
                     }
                     showButtonSheet = false
-                }
+                },
+                navController
             )
         }
     }

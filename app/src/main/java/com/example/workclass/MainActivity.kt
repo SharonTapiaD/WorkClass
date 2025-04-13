@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.workclass.data.DataBase.AppDatabase
 import com.example.workclass.data.DataBase.DatabaseProvider
 import com.example.workclass.ui.Screens.AccountsScreen
@@ -49,7 +50,7 @@ fun ComposableMultiScreenApp(){
 
 @Composable
 fun SetupNavGraph(navController: NavHostController){
-    NavHost(navController=navController, startDestination= "main_menu"){
+    NavHost(navController=navController, startDestination= "login_screen"){
         composable("main_menu"){MainMenuScreen(navController) }
         composable("home_screen"){HomeScreen(navController) }
         composable("test_screen"){ TestScreen(navController) }
@@ -58,6 +59,16 @@ fun SetupNavGraph(navController: NavHostController){
         composable("login_screen"){ LoginScreen(navController) }
         composable("accounts_screen"){ AccountsScreen(navController) }
         composable("manage_account_screen"){ ManageAccountScreen(navController) }
+        composable(
+            route = "manage_account_screen/{id}",
+            arguments = listOf(navArgument("id") { defaultValue = -1 })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: -1
+            ManageAccountScreen(
+                navController = navController,
+                accountId = id
+            )
+        }
         composable("favorite_accounts_screen"){ FavoriteAccountsScreen(navController) }
     }
 }
