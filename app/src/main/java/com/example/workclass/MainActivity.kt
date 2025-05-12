@@ -22,6 +22,7 @@ import com.example.workclass.ui.Screens.TestScreen
 import com.example.workclass.ui.Screens.WattpadInterface
 import com.example.workclass.ui.Screens.LoginScreen
 import com.example.workclass.ui.Screens.ManageAccountScreen
+import com.example.workclass.ui.Screens.Camara
 
 class MainActivity : ComponentActivity() {
     lateinit var database: AppDatabase
@@ -50,7 +51,7 @@ fun ComposableMultiScreenApp(){
 
 @Composable
 fun SetupNavGraph(navController: NavHostController){
-    NavHost(navController=navController, startDestination= "login_screen"){
+    NavHost(navController=navController, startDestination= "camara_screen"){
         composable("main_menu"){MainMenuScreen(navController) }
         composable("home_screen"){HomeScreen(navController) }
         composable("test_screen"){ TestScreen(navController) }
@@ -70,5 +71,6 @@ fun SetupNavGraph(navController: NavHostController){
             )
         }
         composable("favorite_accounts_screen"){ FavoriteAccountsScreen(navController) }
+        composable("camara_screen"){ Camara(navController) }
     }
 }
