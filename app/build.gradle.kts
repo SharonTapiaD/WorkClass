@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.adaptive.android)
     implementation(libs.androidx.storage)
     implementation(libs.androidx.media3.database)
+    implementation(libs.androidx.room.runtime.android)
     //implementation(libs.androidx.material3.adaptive.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -80,4 +81,14 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
+
+    val cameraxVersion = "1.3.1"
+    implementation("androidx.camera:camera-core:$cameraxVersion") // Lógica base
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")// Conexión con la API Camera2
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion") // Necesario para la prewiew
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation ("com.google.accompanist:accompanist-permissions:0.34.0")
+    implementation("androidx.camera:camera-video:$cameraxVersion")
+    implementation ("io.coil-kt:coil-compose:2.2.2")
 }
