@@ -59,9 +59,14 @@ fun MainMenuScreen(navController: NavHostController){
             Text("Go to Favorite Account Screen")
         }
         Button(
-            onClick = {navController.navigate("camaraScreen")}
+            onClick = {navController.navigate("camara_screen")}
         ) {
             Text("Go to Camara Screen")
+        }
+        Button(
+            onClick = {navController.navigate("calendario_contactos_screen")}
+        ) {
+            Text("Go to Calendar and Contacts Screen")
         }
     }
 }
