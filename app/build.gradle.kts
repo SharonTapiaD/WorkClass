@@ -91,4 +91,12 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-permissions:0.34.0")
     implementation("androidx.camera:camera-video:$cameraxVersion")
     implementation ("io.coil-kt:coil-compose:2.2.2")
+
+    // WorkManager
+    // REVISA QUE NO LOS TENGAS REPETIDOS, USA CTRL + F
+    implementation("androidx.work:work-runtime-ktx:2.10.1")
+    implementation ("androidx.work:work-runtime:2.10.1")
+
+    //Implementacion de biometric
+    implementation ("androidx.biometric:biometric:1.2.0-alpha05")
 }
